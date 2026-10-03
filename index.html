@@ -3,34 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔒 Private AI Studio Mirror</title>
+    <title>🔒 Unified AI Studio Control Center</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f3f4f6; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { color: #1f2937; margin-bottom: 5px; }
-        input[type="text"] { width: 80%; max-width: 600px; padding: 12px; border: 2px solid #d1d5db; border-radius: 8px; font-size: 16px; margin: 15px 0; }
-        button { background: #2563eb; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #1d4ed8; }
-        iframe { width: 100%; height: 850px; border: none; border-radius: 8px; margin-top: 20px; display: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); border: 1px solid #334155; }
+        h1 { color: #f1f5f9; margin-bottom: 5px; font-size: 28px; }
+        
+        .progress-box { margin: 25px auto; max-width: 500px; background: #020617; padding: 20px; border-radius: 12px; border: 1px solid #475569; }
+        .step { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; color: #64748b; font-size: 15px; font-weight: 500; text-align: left; }
+        .step.active { color: #38bdf8; }
+        .step.done { color: #10b981; }
+        .badge { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #64748b; display: inline-block; margin-right: 10px; }
+        .step.active .badge { border-color: #38bdf8; background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+        .step.done .badge { border-color: #10b981; background: #10b981; }
+        
+        .btn-power { background: #2563eb; color: white; border: none; padding: 16px 36px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(37,99,235,0.4); }
+        .btn-power:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .btn-power:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        iframe { width: 100%; height: 900px; border: none; border-radius: 12px; margin-top: 25px; display: none; background: #ffffff; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔒 Secure AI Creative Studio Launcher</h1>
-        <p>Enter your daily active runtime proxy address link to mount your cloud canvas interface.</p>
-        <input type="text" id="urlInput" placeholder="Paste your active https://gradio.live link here...">
-        <br>
-        <button onclick="mountStudio()">🚀 Connect Engine</button>
+        <h1>🔒 Unified Fixed-Point AI Studio</h1>
+        <p style="color: #94a3b8; margin-top: 0; margin-bottom: 25px;">Automated 1-Click Studio Execution Portal</p>
+        
+        <button id="powerBtn" class="btn-power" onclick="startStudioPipeline()">⚡ Power Up Cloud GPU Studio</button>
+
+        <div id="tracker" class="progress-box" style="display: none;">
+            <div id="step1" class="step"><span>⏳ 1. Notebook Booting Up...</span><span class="badge"></span></div>
+            <div id="step2" class="step"><span>⚙️ 2. Base Configuration Active...</span><span class="badge"></span></div>
+            <div id="step3" class="step"><span>🌀 3. Generating Secure Link...</span><span class="badge"></span></div>
+            <div id="step4" class="step"><span>📡 4. Syncing Stream Link...</span><span class="badge"></span></div>
+            <div id="step5" class="step"><span>🎉 5. Studio Ready!</span><span class="badge"></span></div>
+        </div>
+
         <iframe id="studioFrame"></iframe>
     </div>
 
     <script>
-        function mountStudio() {
-            const targetUrl = document.getElementById('urlInput').value.strip();
-            if (!targetUrl) { alert('⚠️ Please paste your running Gradio live tunnel link!'); return; }
-            const frame = document.getElementById('studioFrame');
-            frame.src = targetUrl;
-            frame.style.display = 'block';
+        const KAGGLE_USERNAME = "sandeepdahiya1506";
+        const KAGGLE_KEY = "3c2420ca7de53b3b24bf20a8767de99c"; // Your hidden unique key string token
+        const KAGGLE_NOTEBOOK_ID = "notebookaf63a99161";
+        
+        const PUBLIC_RELAY_KEY = "studio_" + KAGGLE_USERNAME; 
+        let pollTimer = null;
+
+        function setStepState(stepNum, state) {
+            const el = document.getElementById('step' + stepNum);
+            if (!el) return;
+            el.className = 'step ' + state;
+        }
+
+        async function startStudioPipeline() {
+            document.getElementById('powerBtn').style.display = 'none';
+            document.getElementById('tracker').style.display = 'block';
+            setStepState(1, 'active');
+            
+            try {
+                const basicAuth = btoa(`${KAGGLE_USERNAME}:${KAGGLE_KEY}`);
+                // Uses a public proxy gate layout bypass to pass header records smoothly
+                const proxyUrl = "https://herokuapp.com";
+                const targetUrl = `https://kaggle.com{KAGGLE_USERNAME}/${KAGGLE_NOTEBOOK_ID}`;
+
+                await fetch(proxyUrl + targetUrl, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Basic ${basicAuth}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ "type": "commit" })
+                });
+
+                pollTimer = setInterval(listenToNotebookRelay, 4000);
+            } catch (err) {
+                setStepState(1, 'active');
+                pollTimer = setInterval(listenToNotebookRelay, 4000);
+            }
+        }
+
+        async function listenToNotebookRelay() {
+            try {
+                const res = await fetch(`https://kvstore.io{PUBLIC_RELAY_KEY}`);
+                if (!res.ok) return;
+                
+                const data = await res.json();
+                const signal = data.value;
+
+                if (signal === "STEP_2") {
+                    setStepState(1, 'done');
+                    setStepState(2, 'active');
+                } else if (signal === "STEP_3") {
+                    setStepState(1, 'done');
+                    setStepState(2, 'done');
+                    setStepState(3, 'active');
+                } else if (signal === "STEP_4") {
+                    setStepState(1, 'done');
+                    setStepState(2, 'done');
+                    setStepState(3, 'done');
+                    setStepState(4, 'active');
+                } else if (signal.includes("gradio.live")) {
+                    clearInterval(pollTimer);
+                    setStepState(1, 'done');
+                    setStepState(2, 'done');
+                    setStepState(3, 'done');
+                    setStepState(4, 'done');
+                    setStepState(5, 'done');
+                    
+                    setTimeout(() => {
+                        document.getElementById('tracker').style.display = 'none';
+                        const frame = document.getElementById('studioFrame');
+                        frame.src = signal;
+                        frame.style.display = 'block';
+                    }, 1000);
+                }
+            } catch (e) {
+                // Sleep grid tracking mapping skips smoothly
+            }
         }
     </script>
 </body>
